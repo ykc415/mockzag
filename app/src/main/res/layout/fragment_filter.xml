@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/filter_background"
-    android:clipChildren="false">
+    android:background="@color/filter_background">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -71,101 +70,12 @@
         android:id="@+id/age_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingLeft="16dp"
+        android:visibility="invisible"
         android:paddingTop="10dp"
-        android:paddingRight="16dp"
         android:paddingBottom="10dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ages">
-
-        <com.google.android.material.chip.Chip
-            style="@style/Widget.MaterialComponents.Chip.Action"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:text="10대"
-            android:textAlignment="center"
-            android:textColor="@color/soda"
-            app:chipBackgroundColor="@color/white"
-            app:chipCornerRadius="8dp"
-            app:chipStrokeColor="@color/soda"
-            app:chipStrokeWidth="1dp"
-            app:rippleColor="@color/soda" />
-
-        <com.google.android.material.chip.Chip
-            style="@style/Widget.MaterialComponents.Chip.Action"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:text="20대 초반"
-            android:textAlignment="center"
-            android:textColor="@color/soda"
-            app:chipBackgroundColor="@color/white"
-            app:chipCornerRadius="8dp"
-            app:chipStrokeColor="@color/soda"
-            app:chipStrokeWidth="1dp"
-            app:rippleColor="@color/soda" />
-
-        <com.google.android.material.chip.Chip
-            style="@style/Widget.MaterialComponents.Chip.Action"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:text="20대 중반"
-            android:textAlignment="center"
-            android:textColor="@color/soda"
-            app:chipBackgroundColor="@color/white"
-            app:chipCornerRadius="8dp"
-            app:chipStrokeColor="@color/soda"
-            app:chipStrokeWidth="1dp"
-            app:rippleColor="@color/soda" />
-
-        <com.google.android.material.chip.Chip
-            style="@style/Widget.MaterialComponents.Chip.Action"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:text="20대 후반"
-            android:textAlignment="center"
-            android:textColor="@color/soda"
-            app:chipBackgroundColor="@color/white"
-            app:chipCornerRadius="8dp"
-            app:chipStrokeColor="@color/soda"
-            app:chipStrokeWidth="1dp"
-            app:rippleColor="@color/soda" />
-        <com.google.android.material.chip.Chip
-            style="@style/Widget.MaterialComponents.Chip.Action"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:text="30대 초반"
-            android:textAlignment="center"
-            android:textColor="@color/soda"
-            app:chipBackgroundColor="@color/white"
-            app:chipCornerRadius="8dp"
-            app:chipStrokeColor="@color/soda"
-            app:chipStrokeWidth="1dp"
-            app:rippleColor="@color/soda" />
-        <com.google.android.material.chip.Chip
-            style="@style/Widget.MaterialComponents.Chip.Action"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:text="30대 중반"
-            android:textAlignment="center"
-            android:textColor="@color/soda"
-            app:chipBackgroundColor="@color/white"
-            app:chipCornerRadius="8dp"
-            app:chipStrokeColor="@color/soda"
-            app:chipStrokeWidth="1dp"
-            app:rippleColor="@color/soda" />
-        <com.google.android.material.chip.Chip
-            style="@style/Widget.MaterialComponents.Chip.Action"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:text="30대 후반"
-            android:textAlignment="center"
-            android:textColor="@color/soda"
-            app:chipBackgroundColor="@color/white"
-            app:chipCornerRadius="8dp"
-            app:chipStrokeColor="@color/soda"
-            app:chipStrokeWidth="1dp"
-            app:rippleColor="@color/soda" />
 
     </com.google.android.material.chip.ChipGroup>
 
@@ -192,25 +102,12 @@
         android:paddingTop="10dp"
         android:paddingRight="16dp"
         android:paddingBottom="10dp"
+        android:visibility="invisible"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/style">
 
-        <com.google.android.material.chip.Chip
-            style="@style/Widget.MaterialComponents.Chip.Action"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="10대"
-            android:textAlignment="center"
-            android:textColor="@color/pink"
-            app:chipBackgroundColor="@color/white"
-            app:chipCornerRadius="8dp"
-            app:chipStrokeColor="@color/pink"
-            app:chipStrokeWidth="1dp"
-            app:rippleColor="@color/soda" />
-
     </com.google.android.material.chip.ChipGroup>
-
 
     <TextView
         android:id="@+id/select"
@@ -219,11 +116,11 @@
         android:background="@color/soda"
         android:text="선택완료"
         android:textSize="20dp"
+        android:foreground="?android:attr/selectableItemBackgroundBorderless"
         android:textColor="@color/white"
         android:gravity="center"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

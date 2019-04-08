@@ -8,7 +8,6 @@ import com.app.ykc.zigzag_challenge.app.ZigZagApplication
 import com.app.ykc.zigzag_challenge.data.ShoppingMallRepository
 import com.app.ykc.zigzag_challenge.utils.ImageUrlGenerator
 import io.reactivex.schedulers.Schedulers
-import timber.log.Timber
 
 class MainViewModel(
         state: MainState,
@@ -28,8 +27,11 @@ class MainViewModel(
                             }.sortedByDescending { d -> d.point }
                     )
                 }, stateReducer = {
-                    Timber.e(it.toString())
-                    copy(shoppingMallData = it, shoppingMalls = it()?.list, week = it()?.week)
+                    copy(shoppingMallData = it,
+                            shoppingMalls = it()?.list,
+                            week = it()?.week,
+                            styleSet = it()?.list?.map { data -> data.styles }?.flatten()?.toSet(),
+                            ageSet = it()?.list?.map { data -> data.ages }?.flatten()?.toSet())
                 })
 
     }

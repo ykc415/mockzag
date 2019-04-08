@@ -1,5 +1,6 @@
 package com.app.ykc.zigzag_challenge.data
 
+import android.content.Context
 import androidx.annotation.VisibleForTesting
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
@@ -46,6 +47,14 @@ enum class Range {
     }
 }
 
+fun Range.getString(context: Context) : String {
+    return when(this) {
+        Range.Early -> "초반"
+        Range.Mid -> "중반"
+        Range.Late -> "후반"
+    }
+}
+
 sealed class Ages {
     object Teens: Ages()
     data class Twenties(val range: Range): Ages()
@@ -70,6 +79,19 @@ sealed class Ages {
                 in 4 .. 6 -> Thirties(range = Range.create(index))
                 else -> throw IllegalArgumentException("잘못된 index가 들어왔음 $index")
             }
+        }
+    }
+}
+
+fun Ages.getString(context: Context) : String {
+    val age = this
+    return when (age) {
+        is Ages.Teens -> "10대"
+        is Ages.Twenties -> {
+            "20대 ${age.range.getString(context)}"
+        }
+        is Ages.Thirties -> {
+            "30대 ${age.range.getString(context)}"
         }
     }
 }

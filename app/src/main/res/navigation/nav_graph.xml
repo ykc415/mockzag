@@ -5,20 +5,26 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/mainFragment">
 
+    <action
+        android:id="@+id/start_filter"
+        app:destination="@id/filter" />
+
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.app.ykc.zigzag_challenge.MainFragment"
         android:label="fragment_main"
         tools:layout="@layout/fragment_main">
-        <action
-                android:id="@+id/action_mainFragment_to_filterFragment"
-                app:destination="@id/filterFragment"/>
     </fragment>
 
-    <fragment
-        android:id="@+id/filterFragment"
-        android:name="com.app.ykc.zigzag_challenge.FilterFragment"
-        android:label="fragment_filter"
-        tools:layout="@layout/fragment_filter" />
+    <navigation
+        android:id="@+id/filter"
+        app:startDestination="@id/filterFragment">
+
+        <fragment
+            android:id="@+id/filterFragment"
+            android:name="com.app.ykc.zigzag_challenge.FilterFragment"
+            android:label="fragment_filter"
+            tools:layout="@layout/fragment_filter" />
+    </navigation>
 
 </navigation>

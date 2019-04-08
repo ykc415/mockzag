@@ -16,7 +16,12 @@ import timber.log.Timber
 
 class MainFragment : BaseMvRxFragment() {
 
-    private val viewModel: MainViewModel by fragmentViewModel()
+    private val viewModel: MainViewModel by activityViewModel()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Timber.e("HI")
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_main, container, false)
@@ -28,14 +33,14 @@ class MainFragment : BaseMvRxFragment() {
         }
 
         filter.setOnClickListener {
-            findNavController().navigate(R.id.action_mainFragment_to_filterFragment)
+            findNavController().navigate(R.id.start_filter)
         }
 
         recyclerView.addItemDecoration(DividerItemDecoration(context, VERTICAL))
     }
 
     override fun invalidate() = withState(viewModel) { state ->
-        Timber.e("invalidate $state")
+        Timber.e("invalidate ")
 
         if(state.shoppingMallData is Success) {
             label.text = String.format(getString(R.string.ranking), state.week)
