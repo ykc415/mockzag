@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView.VERTICAL
 import com.airbnb.mvrx.*
@@ -27,7 +28,7 @@ class MainFragment : BaseMvRxFragment() {
         }
 
         filter.setOnClickListener {
-
+            findNavController().navigate(R.id.action_mainFragment_to_filterFragment)
         }
 
         recyclerView.addItemDecoration(DividerItemDecoration(context, VERTICAL))

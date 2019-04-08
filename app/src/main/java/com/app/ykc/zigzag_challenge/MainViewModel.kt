@@ -22,8 +22,10 @@ class MainViewModel(
                 .execute(mapper = {
                     it.copy(
                             list = it.list.map { data ->
-                                data.copy(url = ImageUrlGenerator.getImageUrl(data.url))
-                            }
+                                data.copy(
+                                    url = ImageUrlGenerator.getImageUrl(data.url)
+                                )
+                            }.sortedByDescending { d -> d.point }
                     )
                 }, stateReducer = {
                     Timber.e(it.toString())

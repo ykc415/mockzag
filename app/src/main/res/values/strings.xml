@@ -8,4 +8,13 @@
     <string name="search">쇼핑몰 검색</string>
 
     <string name="ranking">%1$s차 랭킹</string>
+
+    <string name="all">모두</string>
+    <string name="teen">10대</string>
+    <string name="twenties">20대</string>
+    <string name="thirties">30대</string>
+    <string name="filter_title">쇼핑몰 필터</string>
+    <string name="initialize">초기화</string>
+
+
 </resources>

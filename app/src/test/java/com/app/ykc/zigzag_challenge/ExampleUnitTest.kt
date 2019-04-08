@@ -1,9 +1,9 @@
 package com.app.ykc.zigzag_challenge
 
+import com.app.ykc.zigzag_challenge.data.Ages
+import com.app.ykc.zigzag_challenge.data.Range
 import org.junit.Test
 
-import org.junit.Assert.*
-import java.util.*
 
 /**
  * Example local unit test, which will execute on the development machine (host).
@@ -14,14 +14,24 @@ class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
 
-        j(0)
+        val ages = listOf(Ages.Teens, Ages.Twenties(Range.Early), Ages.Twenties(Range.Mid), Ages.Thirties(Range.Mid))
 
-    }
 
-    tailrec fun j(i: Int) : Int{
-        println(i)
-        if(i == 10) return 10
-        else return j(i+1)
+        ages.map { age ->
+            when (age) {
+                is Ages.Teens -> "10대"
+                is Ages.Twenties -> "20대"
+                is Ages.Thirties -> "30대"
+            }
+        }.distinct().let {
+            if (it.size == 3) {
+                listOf("모두")
+            } else {
+                it
+            }
+        }.forEach { println(it) }
+
+
     }
 
 }
