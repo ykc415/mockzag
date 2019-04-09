@@ -46,8 +46,9 @@ class ShoppingMallView @JvmOverloads constructor(
 
         ages.text = getAgesString(data.ages)
 
-        style0.text = data.styles[0]
-        style1.text = data.styles[1]
+        val styleList = data.styles.toList()
+        style0.text = styleList[0]
+        style1.text = styleList[1]
 
     }
 
@@ -56,7 +57,7 @@ class ShoppingMallView @JvmOverloads constructor(
         ranking.text = rankText
     }
 
-    fun getAgesString(ages: List<Ages>) : String {
+    fun getAgesString(ages: Set<Ages>) : String {
         return ages.map { age ->
             when (age) {
                 is Ages.Teens -> context.getString(R.string.teen)

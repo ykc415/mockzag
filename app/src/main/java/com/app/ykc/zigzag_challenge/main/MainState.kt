@@ -1,4 +1,4 @@
-package com.app.ykc.zigzag_challenge
+package com.app.ykc.zigzag_challenge.main
 
 import com.airbnb.mvrx.Async
 import com.airbnb.mvrx.MvRxState
@@ -11,7 +11,7 @@ data class MainState(
     val shoppingMallData: Async<ShoppingMallData> = Uninitialized,
     val shoppingMalls: List<ShoppingMall>? = null,
     val week: String? = null,
-    val styleSet: Set<String>? = null,
-    val ageSet: Set<Ages>? = null
+    val styleMap: Map<String, Boolean>? = null,
+    val ageMap: Map<Ages, Boolean>? = null
 
 ) : MvRxState

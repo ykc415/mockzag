@@ -20,27 +20,45 @@ class AgeChip @JvmOverloads constructor(
 
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
+    lateinit var listener: (Boolean, Ages) -> Unit
+    lateinit var age: Ages
+
     init {
         LayoutInflater.from(context).inflate(R.layout.chip_age, this, true)
 
         chip.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12f)
 
-        chip.setOnCheckedChangeListener { buttonView, isChecked ->
-            Timber.e("$isChecked")
-            if(isChecked) {
-                chip.setChipBackgroundColorResource(R.color.soda)
-            } else {
-                chip.setChipBackgroundColorResource(R.color.white)
-            }
+        chip.setOnCheckedChangeListener { _, isChecked ->
+
+            listener(isChecked, age)
+
+            updateChipBackgroundColor(isChecked)
         }
     }
 
-    fun setData(data: Ages) {
-        chip.text = data.getString(context)
+    private fun updateChipBackgroundColor(isChecked: Boolean) {
+        val res = if(isChecked) R.color.soda else R.color.white
+        chip.setChipBackgroundColorResource(res)
     }
 
-    fun addListener() {
+    fun setData(data: Ages, isChecked: Boolean) {
+        age = data
 
+        chip.text = data.getString(context)
+        chip.isChecked = isChecked
+
+        updateChipBackgroundColor(isChecked)
+    }
+
+    fun clear() {
+        chip.isChecked = false
+
+        updateChipBackgroundColor(false)
+    }
+
+
+    fun addListener(listener: (Boolean, Ages) -> Unit) {
+        this.listener = listener
     }
 
 }

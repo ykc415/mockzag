@@ -23,11 +23,12 @@ data class ShoppingMall(
          * [0, 0, 1, 1, 1, 0, 0]
          * */
         @Json(name = "A") val rawAges: List<Int>,
-        var styles: List<String> = emptyList(),
-        var ages: List<Ages> = emptyList()
+
+        var styles: Set<String> = emptySet(),
+        var ages: Set<Ages> = emptySet()
 ) {
     init {
-        styles = rawStyle.split(",").toList()
+        styles = rawStyle.split(",").map { it.trim() }.toSet()
         ages = Ages.createSetFromRaw(rawAges)
     }
 }
@@ -61,14 +62,14 @@ sealed class Ages {
     data class Thirties(val range: Range): Ages()
 
     companion object {
-        fun createSetFromRaw(raw: List<Int>) : List<Ages> {
+        fun createSetFromRaw(raw: List<Int>) : Set<Ages> {
             return raw.mapIndexed { index, i ->
                 index to i
             }.filter {
                 it.second == 1
             }.map {
                 Ages.create(it.first)
-            }
+            }.toSet()
         }
 
         @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)

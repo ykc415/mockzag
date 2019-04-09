@@ -1,4 +1,4 @@
-package com.app.ykc.zigzag_challenge
+package com.app.ykc.zigzag_challenge.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +8,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView.VERTICAL
 import com.airbnb.mvrx.*
+import com.app.ykc.zigzag_challenge.R
 import com.app.ykc.zigzag_challenge.app.withModels
+import com.app.ykc.zigzag_challenge.views.emptyView
 import com.app.ykc.zigzag_challenge.views.shoppingMallView
 import kotlinx.android.synthetic.main.fragment_main.*
 import timber.log.Timber
@@ -17,11 +19,6 @@ import timber.log.Timber
 class MainFragment : BaseMvRxFragment() {
 
     private val viewModel: MainViewModel by activityViewModel()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Timber.e("HI")
-    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_main, container, false)
@@ -39,19 +36,31 @@ class MainFragment : BaseMvRxFragment() {
         recyclerView.addItemDecoration(DividerItemDecoration(context, VERTICAL))
     }
 
-    override fun invalidate() = withState(viewModel) { state ->
+    override fun invalidate() {
         Timber.e("invalidate ")
 
-        if(state.shoppingMallData is Success) {
-            label.text = String.format(getString(R.string.ranking), state.week)
-        }
+        withState(viewModel) { state ->
 
-        recyclerView.withModels {
-            state.shoppingMalls?.forEachIndexed { index, shoppingMall ->
-                shoppingMallView {
-                    id(index)
-                    data(shoppingMall)
-                    rank((index+1).toString())
+            if (state.shoppingMallData is Success) {
+                label.text = String.format(getString(R.string.ranking), state.week)
+            }
+
+            recyclerView.withModels {
+                if(state.shoppingMalls != null) {
+                    if(state.shoppingMalls.isNotEmpty()) {
+                        state.shoppingMalls.forEachIndexed { index, shoppingMall ->
+                            shoppingMallView {
+                                id(index)
+                                data(shoppingMall)
+                                rank((index + 1).toString())
+                            }
+                        }
+                    } else {
+                        emptyView {
+                            id("empty")
+                            title("비어있음")
+                        }
+                    }
                 }
             }
         }

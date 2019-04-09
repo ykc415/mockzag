@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.widget.FrameLayout
 import com.app.ykc.zigzag_challenge.R
 import kotlinx.android.synthetic.main.chip_style.view.*
-import timber.log.Timber
 
 class StyleChip @JvmOverloads constructor(
         context: Context,
@@ -16,27 +15,45 @@ class StyleChip @JvmOverloads constructor(
 
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
+    lateinit var listener: (Boolean, String) -> Unit
+    lateinit var style: String
+
     init {
         LayoutInflater.from(context).inflate(R.layout.chip_style, this, true)
 
         chip.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13f)
 
-        chip.setOnCheckedChangeListener { buttonView, isChecked ->
-            Timber.e("$isChecked")
-            if(isChecked) {
-                chip.setChipBackgroundColorResource(R.color.pink)
-            } else {
-                chip.setChipBackgroundColorResource(R.color.white)
-            }
+        chip.setOnCheckedChangeListener { _, isChecked ->
+
+            listener(isChecked, style)
+
+            updateChipBackgroundColor(isChecked)
         }
     }
 
-    fun setData(style: String) {
-        chip.text = style
+    private fun updateChipBackgroundColor(isChecked: Boolean) {
+        val res = if(isChecked) R.color.pink else R.color.white
+        chip.setChipBackgroundColorResource(res)
     }
 
-    fun addListener() {
+    fun setData(style: String, isChecked: Boolean) {
+        this.style = style
 
+        chip.text = style
+        chip.isChecked = isChecked
+
+        updateChipBackgroundColor(isChecked)
+    }
+
+    fun clear() {
+        chip.isChecked = false
+
+        updateChipBackgroundColor(false)
+    }
+
+
+    fun addListener(listener: (Boolean, String) -> Unit) {
+        this.listener = listener
     }
 
 }
