@@ -6,7 +6,6 @@ import com.app.ykc.zigzag_challenge.data.ShoppingMall
 import com.app.ykc.zigzag_challenge.filter.FilterLogic
 import org.junit.Test
 import org.junit.Assert.*
-import kotlin.math.exp
 
 class FilterLogicTest {
 
@@ -33,14 +32,14 @@ class FilterLogicTest {
 
     @Test
     fun nothing_selected_case() {
-        val expected = logic.getFilteredData(testData, ageSet = emptySet(), styleSet = emptySet())
+        val expected = logic.getFilteredData(testData, age = emptySet(), style = emptySet())
 
         assertEquals(expected, testData)
     }
 
     @Test
     fun one_age_selected_case() {
-        val expected = logic.getFilteredData(testData, ageSet = setOf(Ages.Teens), styleSet = emptySet())
+        val expected = logic.getFilteredData(testData, age = setOf(Ages.Teens), style = emptySet())
 
         assertEquals(expected, listOf(testData[6], testData[9]))
     }
@@ -48,8 +47,8 @@ class FilterLogicTest {
     @Test
     fun two_age_selected_case() {
         val expected = logic.getFilteredData(testData,
-                ageSet = setOf(Ages.Teens, Ages.Thirties(range = Range.Late)),
-                styleSet = emptySet())
+                age = setOf(Ages.Teens, Ages.Thirties(range = Range.Late)),
+                style = emptySet())
 
         assertEquals(expected, listOf(testData[1], testData[6], testData[9]))
     }
@@ -57,34 +56,34 @@ class FilterLogicTest {
     @Test
     fun multiple_age_selected_case() {
         val expected = logic.getFilteredData(testData,
-                ageSet = setOf(Ages.Teens,
+                age = setOf(Ages.Teens,
                       Ages.Thirties(range = Range.Late),
                       Ages.Twenties(range = Range.Late)),
-                styleSet = emptySet())
+                style = emptySet())
 
         assertEquals(expected, listOf(testData[0], testData[1], testData[3], testData[6], testData[9]))
     }
 
     @Test
     fun one_style_selected_case() {
-        val expected = logic.getFilteredData(testData, ageSet =  emptySet(),
-                styleSet = setOf("c"))
+        val expected = logic.getFilteredData(testData, age =  emptySet(),
+                style = setOf("c"))
 
         assertEquals(expected, listOf(testData[2], testData[6]))
     }
 
     @Test
     fun two_style_selected_case() {
-        val expected = logic.getFilteredData(testData, ageSet =  emptySet(),
-                styleSet = setOf("c", "d"))
+        val expected = logic.getFilteredData(testData, age =  emptySet(),
+                style = setOf("c", "d"))
 
         assertEquals(expected, listOf(testData[2], testData[6], testData[8]))
     }
 
     @Test
     fun multiple_style_selected_case() {
-        val expected = logic.getFilteredData(testData, ageSet =  emptySet(),
-                styleSet = setOf("a", "b", "d"))
+        val expected = logic.getFilteredData(testData, age =  emptySet(),
+                style = setOf("a", "b", "d"))
 
         assertEquals(expected, listOf(testData[0], testData[1], testData[3], testData[4],
             testData[5], testData[8], testData[9], testData[2], testData[6], testData[7]))
@@ -92,8 +91,8 @@ class FilterLogicTest {
 
     @Test
     fun age_and_style_selected_case() {
-        val expected = logic.getFilteredData(testData, ageSet = setOf(Ages.Twenties(Range.Mid)),
-            styleSet = setOf("a", "b"))
+        val expected = logic.getFilteredData(testData, age = setOf(Ages.Twenties(Range.Mid)),
+            style = setOf("a", "b"))
 
         assertEquals(expected, listOf(testData[0], testData[1], testData[3], testData[4],
             testData[5], testData[9], testData[7], testData[8]))

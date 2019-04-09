@@ -19,6 +19,8 @@ class MainViewModel(
 ) : MvRxViewModel<MainState>(state) {
 
     init {
+        logStateChanges()
+
         repository.getShoppingMall()
                 .subscribeOn(Schedulers.io())
                 .execute(mapper = {
@@ -33,24 +35,33 @@ class MainViewModel(
                     copy(shoppingMallData = it,
                             shoppingMalls = it()?.list,
                             week = it()?.week,
-                            styleMap = it()?.list?.map { data -> data.styles }?.flatten()?.associate { style -> style to false },
-                            ageMap = it()?.list?.map { data -> data.ages }?.flatten()?.associate { age -> age to false }
+                            styles = it()?.list?.flatMap {d -> d.styles }?.toSet()?.toList()?.map{s -> s to false},
+                            ages = it()?.list?.flatMap {d -> d.ages }?.toSet()?.toList()?.map{a -> a to false}
                     )
                 })
     }
 
-    fun setFilter(ageFilter: Map<Ages, Boolean>, styleFilter: Map<String, Boolean>) {
+    private fun <T> updateWithFilter(list: List<Pair<T, Boolean>>, filter: Set<T>): List<Pair<T, Boolean>> {
+        return list.map {
+            if (filter.contains(it.first)) {
+                it.first to true
+            } else {
+                it.first to false
+            }
+        }
+    }
+
+    fun setFilter(ageFilter: Set<Ages>, styleFilter: Set<String>) {
         setState {
 
-            val result = filterLogic.getFilteredData(shoppingMallData()!!.list,
-                    ageFilter.filter { it.value }.keys,
-                    styleFilter.filter { it.value }.keys)
+            val result = filterLogic.getFilteredData(shoppingMallData()!!.list, ageFilter, styleFilter)
 
             copy(
                     shoppingMalls = result,
-                    ageMap =  ageFilter,
-                    styleMap =  styleFilter
+                    ages = updateWithFilter(ages!!, ageFilter),
+                    styles = updateWithFilter(styles!!, styleFilter)
             )
+
         }
     }
 

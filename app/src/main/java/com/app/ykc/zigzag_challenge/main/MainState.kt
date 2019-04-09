@@ -11,7 +11,7 @@ data class MainState(
     val shoppingMallData: Async<ShoppingMallData> = Uninitialized,
     val shoppingMalls: List<ShoppingMall>? = null,
     val week: String? = null,
-    val styleMap: Map<String, Boolean>? = null,
-    val ageMap: Map<Ages, Boolean>? = null
+    val styles: List<Pair<String, Boolean>>? = null,
+    val ages:  List<Pair<Ages, Boolean>>? = null
 
 ) : MvRxState

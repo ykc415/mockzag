@@ -5,14 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.children
 import androidx.navigation.fragment.findNavController
+import com.airbnb.epoxy.EpoxyModel
 import com.airbnb.mvrx.*
 import com.app.ykc.zigzag_challenge.R
-import com.app.ykc.zigzag_challenge.data.Ages
+import com.app.ykc.zigzag_challenge.app.withModels
 import com.app.ykc.zigzag_challenge.main.MainViewModel
-import com.app.ykc.zigzag_challenge.views.AgeChip
-import com.app.ykc.zigzag_challenge.views.StyleChip
+import com.app.ykc.zigzag_challenge.views.*
 import kotlinx.android.synthetic.main.fragment_filter.*
 import timber.log.Timber
 
@@ -30,17 +29,7 @@ class FilterFragment : BaseMvRxFragment() {
         super.onActivityCreated(savedInstanceState)
 
         clear.setOnClickListener {
-            withState(viewModel) { state ->
-                state.ageFilter.mapValues { false }
-                state.styleFilter.mapValues { false }
-            }
-
-            age_group.children.forEach {
-                (it as AgeChip).clear()
-            }
-            style_group.children.forEach {
-                (it as StyleChip).clear()
-            }
+            viewModel.clear()
         }
 
         close.setOnClickListener {
@@ -49,13 +38,13 @@ class FilterFragment : BaseMvRxFragment() {
 
         select.setOnClickListener {
             withState(viewModel) { state ->
-                activityViewModel.setFilter(state.ageFilter, state.styleFilter)
+                activityViewModel.setFilter(state.selectedAge, state.selectedStyle)
                 findNavController().popBackStack()
             }
         }
 
         withState(activityViewModel) {
-            viewModel.setData(it.ageMap, it.styleMap)
+            viewModel.setData(it.ages, it.styles)
         }
     }
 
@@ -64,24 +53,48 @@ class FilterFragment : BaseMvRxFragment() {
 
         withState(viewModel) { state ->
 
-            if (age_group.childCount == 0) {
-                state.ageFilter.forEach {
-                    age_group.addView(AgeChip(context!!).apply {
-                        addListener { isChecked, age -> viewModel.ageChecked(isChecked, age) }
-                        setData(it.key, it.value)
-                    })
+            recyclerView.withModels {
+                labelView {
+                    id("age")
+                    text("연령대")
                 }
-                age_group.visibility = View.VISIBLE
-            }
 
-            if(style_group.childCount == 0) {
-                state.styleFilter.forEach {
-                    style_group.addView(StyleChip(context!!).apply {
-                        addListener { isChecked, style -> viewModel.styleChecked(isChecked, style) }
-                        setData(it.key, it.value)
+                gridCarousel {
+                    id("ages")
+                    models(mutableListOf<EpoxyModel<View>>().apply {
+                        state.ages?.toList()?.forEachIndexed { index, data ->
+                            add(BlueChip(age = data.first,
+                                    isChecked = data.second,
+                                    listener = { checked, age ->
+                                        Timber.e("${this@FilterFragment} / $checked, $age")
+                                        viewModel.ageChecked(checked, age)
+                                    })
+                                    .id("age$index")
+                            )
+                        }
                     })
                 }
-                style_group.visibility = View.VISIBLE
+
+                labelView {
+                    id("style")
+                    text("스타일")
+                }
+
+                grid3Carousel {
+                    id("styles")
+                    models(mutableListOf<EpoxyModel<View>>().apply {
+                        state.styles?.toList()?.forEachIndexed { index, data ->
+                            add(PinkChip(title = data.first,
+                                    isChecked = data.second,
+                                    listener = { checked, style ->
+                                        Timber.e("${this@FilterFragment} / $checked, $style")
+                                        viewModel.styleChecked(checked, style)
+                                    })
+                                    .id("styles$index")
+                            )
+                        }
+                    })
+                }
             }
         }
     }

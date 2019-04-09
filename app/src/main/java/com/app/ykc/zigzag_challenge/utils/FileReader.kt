@@ -10,4 +10,5 @@ class FileReader(
     fun readJsonFileFromAsset(fileName: String): String {
         return asset.open(fileName).bufferedReader().use { it.readText() }
     }
+
 }

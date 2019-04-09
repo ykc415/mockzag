@@ -6,34 +6,34 @@ import java.lang.IllegalStateException
 
 class FilterLogic {
 
-    fun getFilteredData(list: List<ShoppingMall>, ageSet: Set<Ages>, styleSet: Set<String>)
+    fun getFilteredData(list: List<ShoppingMall>, age: Set<Ages>, style: Set<String>)
             : List<ShoppingMall> {
 
         when {
-            ageSet.isEmpty() && styleSet.isEmpty() -> {
+            age.isEmpty() && style.isEmpty() -> {
                 return list
             }
 
-            ageSet.isNotEmpty() && styleSet.isEmpty() -> {
+            age.isNotEmpty() && style.isEmpty() -> {
                 return list.filter { data ->
-                    data.ages.any { ageSet.contains(it) }
+                    data.ages.any { age.contains(it) }
                 }
             }
 
-            ageSet.isEmpty() && styleSet.isNotEmpty() -> {
-                when (styleSet.size) {
+            age.isEmpty() && style.isNotEmpty() -> {
+                when (style.size) {
                     1 -> {
                         return list.filter { data ->
-                            data.styles.any { styleSet.first() == it }
+                            data.styles.any { style.first() == it }
                         }.sortedByDescending { it.point }
                     }
                     else -> {
                         return list.filter { data ->
                             data.styles.any {
-                                styleSet.any { s -> s == it }
+                                style.any { s -> s == it }
                             }
                         }.groupBy {
-                            styleSet.containsAll(it.styles)
+                            style.containsAll(it.styles)
                         }.map {
                             it.value.sortedByDescending { v -> v.point }
                         }.flatten()
@@ -41,13 +41,13 @@ class FilterLogic {
                 }
             }
 
-            ageSet.isNotEmpty() && styleSet.isNotEmpty() -> {
+            age.isNotEmpty() && style.isNotEmpty() -> {
                 return list.filter { data ->
-                    data.ages.any { ageSet.contains(it) }
+                    data.ages.any { age.contains(it) }
                 }.filter { data ->
-                    data.styles.any { styleSet.contains(it) }
+                    data.styles.any { style.contains(it) }
                 }.groupBy {
-                    styleSet.containsAll(it.styles)
+                    style.containsAll(it.styles)
                 }.map {
                     it.value.sortedByDescending { v -> v.point }
                 }.flatten()
@@ -56,8 +56,8 @@ class FilterLogic {
             else -> throw IllegalStateException("""
                  FilterLogic에 정의되지 않은 상태가 들어옴
                     $list
-                    $ageSet
-                    $styleSet)
+                    $age
+                    $style)
             """.trimIndent())
         }
     }
