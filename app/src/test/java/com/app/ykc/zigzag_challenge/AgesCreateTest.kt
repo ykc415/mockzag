@@ -29,15 +29,9 @@ class AgesCreateTest {
 
     @Test
     fun createSetFromRawTest() {
-//        assertEquals(Ages.createSetFromRaw(listOf(0, 0, 1, 1, 1, 0, 0)), setOf(Ages.Twenties, Ages.Thirties))
-//        assertEquals(Ages.createSetFromRaw(listOf(1, 0, 0, 0, 0, 0, 0)), setOf(Ages.Teens))
-//        assertEquals(Ages.createSetFromRaw(listOf(1, 1, 1, 1, 1, 1, 1)), setOf(Ages.All))
-//        assertEquals(Ages.createSetFromRaw(listOf(0, 0, 1, 1, 1, 0, 0)), setOf(Ages.Twenties, Ages.Thirties))
-//        assertEquals(Ages.createSetFromRaw(listOf(0, 0, 1, 1, 1, 0, 0)), setOf(Ages.Twenties, Ages.Thirties))
-//        assertEquals(Ages.createSetFromRaw(listOf(0, 0, 1, 1, 1, 0, 0)), setOf(Ages.Twenties, Ages.Thirties))
-//        assertEquals(Ages.createSetFromRaw(listOf(0, 0, 1, 1, 1, 0, 0)), setOf(Ages.Twenties, Ages.Thirties))
-//        assertEquals(Ages.createSetFromRaw(listOf(0, 0, 1, 1, 1, 0, 0)), setOf(Ages.Twenties, Ages.Thirties))
-//        assertEquals(Ages.createSetFromRaw(listOf(0, 0, 1, 1, 1, 0, 0)), setOf(Ages.Twenties, Ages.Thirties))
+        assertEquals(Ages.createSetFromRaw(listOf(0, 0, 1, 1, 1, 0, 0)),
+            setOf(Ages.Twenties(Range.Mid), Ages.Twenties(Range.Late), Ages.Thirties(Range.Early)))
+        assertEquals(Ages.createSetFromRaw(listOf(1, 0, 0, 0, 0, 0, 0)), setOf(Ages.Teens))
 
     }
 

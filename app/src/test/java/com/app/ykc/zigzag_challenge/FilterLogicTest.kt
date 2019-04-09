@@ -6,6 +6,7 @@ import com.app.ykc.zigzag_challenge.data.ShoppingMall
 import com.app.ykc.zigzag_challenge.filter.FilterLogic
 import org.junit.Test
 import org.junit.Assert.*
+import kotlin.math.exp
 
 class FilterLogicTest {
 
@@ -94,6 +95,7 @@ class FilterLogicTest {
         val expected = logic.getFilteredData(testData, ageSet = setOf(Ages.Twenties(Range.Mid)),
             styleSet = setOf("a", "b"))
 
-        assertEquals(expected, listOf(testData[0], testData[1], testData[3], testData[4], testData[5], testData[9]))
+        assertEquals(expected, listOf(testData[0], testData[1], testData[3], testData[4],
+            testData[5], testData[9], testData[7], testData[8]))
     }
 }

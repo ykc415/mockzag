@@ -44,9 +44,13 @@ class FilterLogic {
             ageSet.isNotEmpty() && styleSet.isNotEmpty() -> {
                 return list.filter { data ->
                     data.ages.any { ageSet.contains(it) }
-                }.filter {
-                    it.styles.toSet() == styleSet
-                }.sortedByDescending { v -> v.point }
+                }.filter { data ->
+                    data.styles.any { styleSet.contains(it) }
+                }.groupBy {
+                    styleSet.containsAll(it.styles)
+                }.map {
+                    it.value.sortedByDescending { v -> v.point }
+                }.flatten()
             }
 
             else -> throw IllegalStateException("""
