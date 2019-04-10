@@ -43,15 +43,23 @@ class FilterFragment : BaseMvRxFragment() {
             }
         }
 
-        if(savedInstanceState == null) {
+        if (savedInstanceState == null) {
             withState(activityViewModel) {
                 viewModel.setData(it.ages, it.styles)
             }
         } else {
             withState(viewModel) {
                 viewModel.setData(
-                        ages = it.ages?.map { a -> if (it.selectedAge.contains(a.first)) { a.first to true} else a },
-                        styles = it.styles?.map { a -> if (it.selectedStyle.contains(a.first)) { a.first to true} else a }
+                        ages = it.ages?.map { a ->
+                            if (it.selectedAge.contains(a.first)) {
+                                a.first to true
+                            } else a
+                        },
+                        styles = it.styles?.map { a ->
+                            if (it.selectedStyle.contains(a.first)) {
+                                a.first to true
+                            } else a
+                        }
                 )
             }
         }
@@ -62,15 +70,16 @@ class FilterFragment : BaseMvRxFragment() {
         Timber.e("invalidate ")
 
         withState(viewModel) { state ->
-
             recyclerView.withModels {
                 labelView {
                     id("age")
                     text("연령대")
                 }
 
+
                 gridCarousel {
                     id("ages")
+
                     models(mutableListOf<EpoxyModel<View>>().apply {
                         state.ages?.forEachIndexed { index, data ->
                             add(BlueChip(
@@ -97,14 +106,13 @@ class FilterFragment : BaseMvRxFragment() {
                     id("styles")
                     models(mutableListOf<EpoxyModel<View>>().apply {
                         state.styles?.forEachIndexed { index, data ->
-                            add(
-                                    PinkChip(title = data.first,
-                                            isChecked = data.second,
-                                            listener = { checked, style ->
-                                                Timber.e("${this@FilterFragment} / $checked, $style")
-                                                viewModel.styleChecked(checked, style)
-                                            })
-                                            .id("styles$index")
+                            add(PinkChip(title = data.first,
+                                    isChecked = data.second,
+                                    listener = { checked, style ->
+                                        Timber.e("${this@FilterFragment} / $checked, $style")
+                                        viewModel.styleChecked(checked, style)
+                                    })
+                                    .id("styles$index")
                             )
                         }
                     })

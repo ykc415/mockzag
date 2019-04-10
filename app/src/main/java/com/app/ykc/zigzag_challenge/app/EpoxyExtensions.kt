@@ -1,6 +1,8 @@
 package com.app.ykc.zigzag_challenge.app
 
+import com.airbnb.epoxy.CarouselModelBuilder
 import com.airbnb.epoxy.EpoxyController
+import com.airbnb.epoxy.EpoxyModel
 import com.airbnb.epoxy.EpoxyRecyclerView
 
 /**

@@ -5,6 +5,7 @@ import com.airbnb.mvrx.MvRxViewModelFactory
 import com.airbnb.mvrx.ViewModelContext
 import com.app.ykc.zigzag_challenge.app.MvRxViewModel
 import com.app.ykc.zigzag_challenge.data.Ages
+import com.app.ykc.zigzag_challenge.utils.replace
 
 import timber.log.Timber
 
@@ -44,6 +45,7 @@ class FilterViewModel(
                 it.selectedStyle.remove(style)
             }
         }
+
     }
 
     fun clear() {
@@ -62,11 +64,5 @@ class FilterViewModel(
         override fun create(viewModelContext: ViewModelContext, state: FilterState): FilterViewModel? {
             return FilterViewModel(state)
         }
-    }
-}
-
-fun <T> List<T>.replace(newValue: T, block: (T) -> Boolean): List<T> {
-    return map {
-        if (block(it)) newValue else it
     }
 }
