@@ -31,7 +31,7 @@ class FilterStateTest {
         val b = FilterState(ages = listOf(Ages.Teens to false, Ages.Twenties(range = Range.Mid) to false),
                 styles = listOf("스타" to false, "스타2" to false))
 
-        val c = a.copy(styles = a.styles?.map { it.copy(it.first.replace("일", "")) })
+        val c = a.copy(styles = a.styles.map { it.copy(it.first.replace("일", "")) })
 
         assertEquals(c, b)
     }

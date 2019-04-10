@@ -7,6 +7,7 @@ import com.app.ykc.zigzag_challenge.filter.FilterLogic
 import com.app.ykc.zigzag_challenge.app.MvRxViewModel
 import com.app.ykc.zigzag_challenge.app.ZigZagApplication
 import com.app.ykc.zigzag_challenge.data.Ages
+import com.app.ykc.zigzag_challenge.data.ShoppingMall
 import com.app.ykc.zigzag_challenge.data.ShoppingMallRepository
 import com.app.ykc.zigzag_challenge.utils.ImageUrlGenerator
 import io.reactivex.schedulers.Schedulers
@@ -41,27 +42,26 @@ class MainViewModel(
                 })
     }
 
-    private fun <T> updateWithFilter(list: List<Pair<T, Boolean>>, filter: Set<T>): List<Pair<T, Boolean>> {
-        return list.map {
-            if (filter.contains(it.first)) {
-                it.first to true
-            } else {
-                it.first to false
-            }
-        }
-    }
 
-    fun setFilter(ageFilter: Set<Ages>, styleFilter: Set<String>) {
+    fun setFilter(ageFilter: List<Pair<Ages, Boolean>>, styleFilter: List<Pair<String, Boolean>>) {
         setState {
 
-            val result = filterLogic.getFilteredData(shoppingMallData()!!.list, ageFilter, styleFilter)
+            val result = filterLogic.getFilteredData(shoppingMallData()!!.list,
+                    ageFilter.filter { it.second }.map { it.first },
+                    styleFilter.filter { it.second }.map { it.first })
 
             copy(
                     shoppingMalls = result,
-                    ages = updateWithFilter(ages!!, ageFilter),
-                    styles = updateWithFilter(styles!!, styleFilter)
+                    ages = ageFilter,
+                    styles = styleFilter
             )
 
+        }
+    }
+
+    fun remove(data: ShoppingMall) {
+        setState {
+            copy(shoppingMalls = shoppingMalls?.filter { it != data })
         }
     }
 

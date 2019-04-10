@@ -6,7 +6,7 @@ import java.lang.IllegalStateException
 
 class FilterLogic {
 
-    fun getFilteredData(list: List<ShoppingMall>, age: Set<Ages>, style: Set<String>)
+    fun getFilteredData(list: List<ShoppingMall>, age: List<Ages>, style: List<String>)
             : List<ShoppingMall> {
 
         when {
@@ -30,13 +30,15 @@ class FilterLogic {
                     else -> {
                         return list.filter { data ->
                             data.styles.any {
-                                style.any { s -> s == it }
+                                style.contains(it)
                             }
                         }.groupBy {
-                            style.containsAll(it.styles)
+                            style.toSet() == it.styles
                         }.map {
-                            it.value.sortedByDescending { v -> v.point }
-                        }.flatten()
+                            it.key to it.value.sortedByDescending{ v -> v.point }
+                        }.reversed().flatMap {
+                            it.second
+                        }
                     }
                 }
             }
@@ -50,7 +52,7 @@ class FilterLogic {
                     style.containsAll(it.styles)
                 }.map {
                     it.value.sortedByDescending { v -> v.point }
-                }.flatten()
+                }.reversed().flatten()
             }
 
             else -> throw IllegalStateException("""
