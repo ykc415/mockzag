@@ -52,7 +52,9 @@ class FilterViewModel(
         setState {
             copy(
                 ages = ages?.map { it.first to false },
-                styles = styles?.map { it.first to false }
+                styles = styles?.map { it.first to false },
+                dirtyFlag = dirtyFlag + 1
+
             ).apply {
                 this.selectedAge.clear()
                 this.selectedStyle.clear()
