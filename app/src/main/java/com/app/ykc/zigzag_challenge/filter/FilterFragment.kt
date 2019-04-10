@@ -7,12 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.airbnb.epoxy.EpoxyModel
+import com.airbnb.epoxy.EpoxyModelTouchCallback
+import com.airbnb.epoxy.EpoxyTouchHelper
+import com.airbnb.epoxy.SimpleEpoxyController
 import com.airbnb.mvrx.*
 import com.app.ykc.zigzag_challenge.R
 import com.app.ykc.zigzag_challenge.app.withModels
+import com.app.ykc.zigzag_challenge.data.getString
 import com.app.ykc.zigzag_challenge.main.MainViewModel
 import com.app.ykc.zigzag_challenge.views.*
 import kotlinx.android.synthetic.main.fragment_filter.*
+import kotlinx.android.synthetic.main.shoppingmall.*
 import timber.log.Timber
 
 
@@ -70,12 +75,12 @@ class FilterFragment : BaseMvRxFragment() {
         Timber.e("invalidate ")
 
         withState(viewModel) { state ->
+
             recyclerView.withModels {
                 labelView {
                     id("age")
                     text("연령대")
                 }
-
 
                 gridCarousel {
                     id("ages")
@@ -88,10 +93,11 @@ class FilterFragment : BaseMvRxFragment() {
                             ).apply {
                                 listener = { checked, age ->
                                     Timber.e("${this@FilterFragment} / $checked, $age")
+
                                     viewModel.ageChecked(checked, age)
                                 }
                             }
-                                    .id("age$index")
+                                    .id(data.first.getString(context!!))
                             )
                         }
                     })
@@ -112,7 +118,7 @@ class FilterFragment : BaseMvRxFragment() {
                                         Timber.e("${this@FilterFragment} / $checked, $style")
                                         viewModel.styleChecked(checked, style)
                                     })
-                                    .id("styles$index")
+                                    .id(data.first)
                             )
                         }
                     })
