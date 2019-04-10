@@ -19,6 +19,7 @@ data class PinkChip(
 
         chip.text = title
         chip.isChecked = isChecked
+        chip.setChipBackgroundColorResource(if(isChecked) R.color.pink else R.color.white)
 
         chip.setOnCheckedChangeListener { view, checked ->
             listener(checked, title)

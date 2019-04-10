@@ -43,9 +43,19 @@ class FilterFragment : BaseMvRxFragment() {
             }
         }
 
-        withState(activityViewModel) {
-            viewModel.setData(it.ages, it.styles)
+        if(savedInstanceState == null) {
+            withState(activityViewModel) {
+                viewModel.setData(it.ages, it.styles)
+            }
+        } else {
+            withState(viewModel) {
+                viewModel.setData(
+                        ages = it.ages?.map { a -> if (it.selectedAge.contains(a.first)) { a.first to true} else a },
+                        styles = it.styles?.map { a -> if (it.selectedStyle.contains(a.first)) { a.first to true} else a }
+                )
+            }
         }
+
     }
 
     override fun invalidate() {
@@ -62,13 +72,16 @@ class FilterFragment : BaseMvRxFragment() {
                 gridCarousel {
                     id("ages")
                     models(mutableListOf<EpoxyModel<View>>().apply {
-                        state.ages?.toList()?.forEachIndexed { index, data ->
-                            add(BlueChip(age = data.first,
-                                    isChecked = data.second,
-                                    listener = { checked, age ->
-                                        Timber.e("${this@FilterFragment} / $checked, $age")
-                                        viewModel.ageChecked(checked, age)
-                                    })
+                        state.ages?.forEachIndexed { index, data ->
+                            add(BlueChip(
+                                    age = data.first,
+                                    isChecked = data.second
+                            ).apply {
+                                listener = { checked, age ->
+                                    Timber.e("${this@FilterFragment} / $checked, $age")
+                                    viewModel.ageChecked(checked, age)
+                                }
+                            }
                                     .id("age$index")
                             )
                         }
@@ -83,14 +96,15 @@ class FilterFragment : BaseMvRxFragment() {
                 grid3Carousel {
                     id("styles")
                     models(mutableListOf<EpoxyModel<View>>().apply {
-                        state.styles?.toList()?.forEachIndexed { index, data ->
-                            add(PinkChip(title = data.first,
-                                    isChecked = data.second,
-                                    listener = { checked, style ->
-                                        Timber.e("${this@FilterFragment} / $checked, $style")
-                                        viewModel.styleChecked(checked, style)
-                                    })
-                                    .id("styles$index")
+                        state.styles?.forEachIndexed { index, data ->
+                            add(
+                                    PinkChip(title = data.first,
+                                            isChecked = data.second,
+                                            listener = { checked, style ->
+                                                Timber.e("${this@FilterFragment} / $checked, $style")
+                                                viewModel.styleChecked(checked, style)
+                                            })
+                                            .id("styles$index")
                             )
                         }
                     })

@@ -9,10 +9,11 @@ import com.google.android.material.chip.Chip
 
 data class BlueChip(
     val age: Ages,
-    val isChecked: Boolean,
-    val listener : (Boolean, Ages) -> Unit
+    val isChecked: Boolean
 
 ) : KotlinModel(R.layout.chip_age) {
+
+    var listener : ((Boolean, Ages) -> Unit)? = null
 
     val chip by bind<Chip>(R.id.chip)
 
@@ -22,8 +23,10 @@ data class BlueChip(
         chip.isChecked = isChecked
         chip.text = age.getString(chip.context)
 
+        chip.setChipBackgroundColorResource(if(isChecked) R.color.soda else R.color.white)
+
         chip.setOnCheckedChangeListener { view, checked ->
-            listener(checked, age)
+            listener?.invoke(checked, age)
 
             (view as Chip).post { view.setChipBackgroundColorResource(if(checked) R.color.soda else R.color.white) }
 

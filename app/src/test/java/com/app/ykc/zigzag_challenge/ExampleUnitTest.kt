@@ -1,7 +1,8 @@
 package com.app.ykc.zigzag_challenge
 
 import com.app.ykc.zigzag_challenge.data.Ages
-import com.app.ykc.zigzag_challenge.data.Range
+import org.junit.Assert.*
+import com.app.ykc.zigzag_challenge.views.BlueChip
 import org.junit.Test
 
 
@@ -14,12 +15,11 @@ class ExampleUnitTest {
     @Test
     fun addition_isCorrect() {
 
+        val a = BlueChip(Ages.Teens, false)
+        val b = BlueChip(Ages.Teens, false)
 
-        val t = setOf("a", "b", "c", "d")
+        assertEquals(a , b)
 
-        val list = listOf("a", "f")
-
-        println(t.containsAll(list))
     }
 
 }

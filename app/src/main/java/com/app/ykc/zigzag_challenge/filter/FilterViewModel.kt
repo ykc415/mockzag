@@ -18,13 +18,11 @@ class FilterViewModel(
     }
 
     fun setData(ages : List<Pair<Ages, Boolean>>?, styles : List<Pair<String, Boolean>>?) {
-        Timber.e("""
-            $ages
-            $styles
-        """.trimIndent())
-
         setState {
-            copy(ages = ages, styles = styles)
+            copy(ages = ages, styles = styles).apply {
+                ages?.filter { it.second }?.forEach { selectedAge.add(it.first) }
+                styles?.filter { it.second }?.forEach { selectedStyle.add(it.first) }
+            }
         }
     }
 
@@ -64,5 +62,11 @@ class FilterViewModel(
         override fun create(viewModelContext: ViewModelContext, state: FilterState): FilterViewModel? {
             return FilterViewModel(state)
         }
+    }
+}
+
+fun <T> List<T>.replace(newValue: T, block: (T) -> Boolean): List<T> {
+    return map {
+        if (block(it)) newValue else it
     }
 }
