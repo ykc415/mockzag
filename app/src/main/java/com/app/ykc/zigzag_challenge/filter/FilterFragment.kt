@@ -113,11 +113,12 @@ class FilterFragment : BaseMvRxFragment() {
                     models(mutableListOf<EpoxyModel<View>>().apply {
                         state.styles?.forEachIndexed { index, data ->
                             add(PinkChip(title = data.first,
-                                    isChecked = data.second,
-                                    listener = { checked, style ->
-                                        Timber.e("${this@FilterFragment} / $checked, $style")
-                                        viewModel.styleChecked(checked, style)
-                                    })
+                                    isChecked = data.second).apply {
+                                listener = { checked, style ->
+                                    Timber.e("${this@FilterFragment} / $checked, $style")
+                                    viewModel.styleChecked(checked, style)
+                                }
+                            }
                                     .id(data.first)
                             )
                         }
