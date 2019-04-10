@@ -1,100 +1,112 @@
 package com.app.ykc.zigzag_challenge
 
+import com.app.ykc.zigzag_challenge.algorithm.FileReader
 import com.app.ykc.zigzag_challenge.data.Ages
 import com.app.ykc.zigzag_challenge.data.Range
 import com.app.ykc.zigzag_challenge.data.ShoppingMall
+import com.app.ykc.zigzag_challenge.data.ShoppingMallData
 import com.app.ykc.zigzag_challenge.filter.FilterLogic
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import org.junit.Test
 import org.junit.Assert.*
 
 class FilterLogicTest {
 
-    /**
-     *
-     *'10대', '20대초반', '20대중반', '20대후반', '30대초반', '30대중반', '30대후반'
-     *
-     * rawAges = [0, 0, 1, 1, 1, 0, 0]
-     * */
-    val testData = listOf(
-            ShoppingMall(name = "0", url = "", point = 10, rawStyle = "a, b", rawAges = listOf(0, 0, 1, 1, 1, 0, 0)),
-            ShoppingMall(name = "1", url = "", point = 9,  rawStyle = "a, b", rawAges = listOf(0, 0, 1, 0, 0, 0, 1)),
-            ShoppingMall(name = "2", url = "", point = 8,  rawStyle = "c, d", rawAges = listOf(0, 0, 0, 0, 0, 0, 0)),
-            ShoppingMall(name = "3", url = "", point = 7,  rawStyle = "a, b", rawAges = listOf(0, 0, 1, 1, 0, 0, 0)),
-            ShoppingMall(name = "4", url = "", point = 6,  rawStyle = "a, b", rawAges = listOf(0, 0, 1, 0, 0, 0, 0)),
-            ShoppingMall(name = "5", url = "", point = 5,  rawStyle = "a, b", rawAges = listOf(0, 0, 1, 0, 0, 0, 0)),
-            ShoppingMall(name = "6", url = "", point = 4,  rawStyle = "a, c", rawAges = listOf(1, 1, 0, 0, 0, 0, 0)),
-            ShoppingMall(name = "7", url = "", point = 3,  rawStyle = "a, e", rawAges = listOf(0, 0, 1, 0, 0, 0, 0)),
-            ShoppingMall(name = "8", url = "", point = 2,  rawStyle = "a, d", rawAges = listOf(0, 0, 1, 0, 0, 0, 0)),
-            ShoppingMall(name = "9", url = "", point = 1,  rawStyle = "a, b", rawAges = listOf(1, 0, 1, 0, 0, 0, 0))
-    )
+    private val testFileName = "shop_list.json"
+
+    private val testData: List<ShoppingMall>
+
+    init {
+        val json = FileReader().readJsonFile(testFileName)
+
+        val moshi = Moshi.Builder()
+                .add(KotlinJsonAdapterFactory())
+                .build()
+
+        testData = moshi.adapter(ShoppingMallData::class.java).fromJson(json)!!.list
+    }
 
     val logic = FilterLogic()
 
     @Test
     fun nothing_selected_case() {
-        val expected = logic.getFilteredData(testData, age = emptySet(), style = emptySet())
+        val expected = logic.getFilteredData(testData, age = emptyList(), style = emptyList())
 
         assertEquals(expected, testData)
     }
 
     @Test
     fun one_age_selected_case() {
-        val expected = logic.getFilteredData(testData, age = setOf(Ages.Teens), style = emptySet())
+        val expected = logic.getFilteredData(testData, age = listOf(Ages.Teens), style = emptyList())
 
-        assertEquals(expected, listOf(testData[6], testData[9]))
+        expected.forEach {
+            assertTrue(it.ages.contains(Ages.Teens))
+        }
     }
 
     @Test
     fun two_age_selected_case() {
-        val expected = logic.getFilteredData(testData,
-                age = setOf(Ages.Teens, Ages.Thirties(range = Range.Late)),
-                style = emptySet())
+        val ages = listOf(Ages.Teens, Ages.Thirties(range = Range.Late))
 
-        assertEquals(expected, listOf(testData[1], testData[6], testData[9]))
+        val expected = logic.getFilteredData(testData,
+                age = ages,
+                style = emptyList())
+
+        expected.forEach {
+            assertTrue(it.ages.contains(Ages.Teens) || it.ages.contains(Ages.Thirties(range = Range.Late)))
+        }
     }
 
     @Test
     fun multiple_age_selected_case() {
-        val expected = logic.getFilteredData(testData,
-                age = setOf(Ages.Teens,
-                      Ages.Thirties(range = Range.Late),
-                      Ages.Twenties(range = Range.Late)),
-                style = emptySet())
+        val ages = listOf(Ages.Teens, Ages.Thirties(range = Range.Late), Ages.Twenties(range = Range.Late))
 
-        assertEquals(expected, listOf(testData[0], testData[1], testData[3], testData[6], testData[9]))
+        val expected = logic.getFilteredData(testData,
+                age = ages,
+                style = emptyList())
+
+        expected.forEach {
+            assertTrue(it.ages.contains(Ages.Teens)
+                    || it.ages.contains(Ages.Thirties(range = Range.Late))
+                    || it.ages.contains(Ages.Twenties(range = Range.Late)))
+        }
     }
 
     @Test
     fun one_style_selected_case() {
-        val expected = logic.getFilteredData(testData, age =  emptySet(),
-                style = setOf("c"))
+        val expected = logic.getFilteredData(testData, age =  emptyList(), style = listOf("러블리"))
 
-        assertEquals(expected, listOf(testData[2], testData[6]))
+        expected.forEach {
+            assertTrue(it.styles.contains("러블리"))
+        }
     }
 
     @Test
     fun two_style_selected_case() {
-        val expected = logic.getFilteredData(testData, age =  emptySet(),
-                style = setOf("c", "d"))
+        val expected = logic.getFilteredData(testData, age =  emptyList(), style = listOf("러블리", "페미닌"))
 
-        assertEquals(expected, listOf(testData[2], testData[6], testData[8]))
+        println(expected.first())
+        assertEquals(expected.first().styles, setOf("러블리", "페미닌"))
     }
 
     @Test
     fun multiple_style_selected_case() {
-        val expected = logic.getFilteredData(testData, age =  emptySet(),
-                style = setOf("a", "b", "d"))
+        val expected = logic.getFilteredData(testData, age =  emptyList(), style = listOf("러블리", "페미닌", "심플베이직"))
 
-        assertEquals(expected, listOf(testData[0], testData[1], testData[3], testData[4],
-            testData[5], testData[8], testData[9], testData[2], testData[6], testData[7]))
+        println(expected.first())
+        assertEquals(expected.first().styles, setOf("러블리", "심플베이직"))
     }
 
     @Test
     fun age_and_style_selected_case() {
-        val expected = logic.getFilteredData(testData, age = setOf(Ages.Twenties(Range.Mid)),
-            style = setOf("a", "b"))
+        val expected = logic.getFilteredData(testData, age = listOf(Ages.Teens), style = listOf("러블리", "페미닌", "심플베이직"))
 
-        assertEquals(expected, listOf(testData[0], testData[1], testData[3], testData[4],
-            testData[5], testData[9], testData[7], testData[8]))
+        expected.forEach {
+            assertTrue(it.ages.contains(Ages.Teens))
+        }
+
+        println(expected.first())
+        assertEquals(expected.first().styles, setOf("러블리", "심플베이직"))
     }
 }

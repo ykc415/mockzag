@@ -12,8 +12,6 @@ class AgesCreateTest {
      * [0, 0, 1, 1, 1, 0, 0]
      * */
 
-    val testData = listOf(0, 0, 1, 1, 1, 0, 0)
-
     @Test
     fun createTest() {
 

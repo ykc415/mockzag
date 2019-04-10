@@ -18,47 +18,34 @@ class FilterViewModel(
         logStateChanges()
     }
 
-    fun setData(ages : List<Pair<Ages, Boolean>>?, styles : List<Pair<String, Boolean>>?) {
+    fun setData(ages : List<Pair<Ages, Boolean>>, styles : List<Pair<String, Boolean>>) {
         setState {
-            copy(ages = ages, styles = styles).apply {
-                ages?.filter { it.second }?.forEach { selectedAge.add(it.first) }
-                styles?.filter { it.second }?.forEach { selectedStyle.add(it.first) }
-            }
+            copy(ages = ages, styles = styles)
         }
     }
 
     fun ageChecked(isChecked: Boolean, age: Ages) {
-        withState {
-            if(isChecked) {
-                it.selectedAge.add(age)
-            } else {
-                it.selectedAge.remove(age)
-            }
+        setState {
+            copy(
+                    ages = ages.replace(age to isChecked) {it.first == age}
+            )
         }
     }
 
     fun styleChecked(isChecked: Boolean, style: String) {
-        withState {
-            if(isChecked) {
-                it.selectedStyle.add(style)
-            } else {
-                it.selectedStyle.remove(style)
-            }
+        setState {
+            copy(
+                    styles = styles.replace(style to isChecked) {it.first == style}
+            )
         }
-
     }
 
     fun clear() {
         setState {
             copy(
-                ages = ages?.map { it.first to false },
-                styles = styles?.map { it.first to false },
-                dirtyFlag = dirtyFlag + 1
-
-            ).apply {
-                this.selectedAge.clear()
-                this.selectedStyle.clear()
-            }
+                ages = ages.map { it.first to false },
+                styles = styles.map { it.first to false }
+            )
         }
     }
 

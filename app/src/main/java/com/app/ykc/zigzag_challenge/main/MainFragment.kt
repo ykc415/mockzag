@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView.VERTICAL
+import com.airbnb.epoxy.AsyncEpoxyController
+import com.airbnb.epoxy.EpoxyController
 import com.airbnb.mvrx.*
 import com.app.ykc.zigzag_challenge.R
 import com.app.ykc.zigzag_challenge.app.withModels
@@ -37,9 +39,9 @@ class MainFragment : BaseMvRxFragment() {
     }
 
     override fun invalidate() {
-        Timber.e("invalidate ")
 
         withState(viewModel) { state ->
+            Timber.e("invalidate ${state.shoppingMalls?.size}")
 
             if (state.shoppingMallData is Success) {
                 label.text = String.format(getString(R.string.ranking), state.week)
