@@ -13,6 +13,8 @@ import com.airbnb.mvrx.withState
 import com.app.ykc.zigzag_challenge.R
 import com.app.ykc.zigzag_challenge.data.Ages
 import com.app.ykc.zigzag_challenge.main.MainViewModel
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.rxkotlin.addTo
 import kotlinx.android.synthetic.main.fragment_filter.*
 import timber.log.Timber
 
@@ -21,6 +23,8 @@ class FilterFragment : BaseMvRxFragment(), FilterController.AdapterCallback{
 
     private val activityViewModel: MainViewModel by activityViewModel()
     private val viewModel: FilterViewModel by fragmentViewModel()
+
+    private val disposable = CompositeDisposable()
 
     val controller = FilterController(this)
 
@@ -48,13 +52,20 @@ class FilterFragment : BaseMvRxFragment(), FilterController.AdapterCallback{
         }
 
         if (savedInstanceState == null) {
-            withState(activityViewModel) {
-                viewModel.setData(it.ages!!, it.styles!!)
-            }
+            activityViewModel.subscribe {
+                if (it.ages != null) {
+                    viewModel.setData(it.ages, it.styles!!)
+                }
+            }.addTo(disposable)
         }
 
         recyclerView.setController(controller)
 
+    }
+
+    override fun onDestroy() {
+        disposable.clear()
+        super.onDestroy()
     }
 
     override fun invalidate() {
