@@ -6,19 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import com.airbnb.epoxy.EpoxyModel
-import com.airbnb.epoxy.EpoxyModelTouchCallback
-import com.airbnb.epoxy.EpoxyTouchHelper
-import com.airbnb.epoxy.SimpleEpoxyController
-import com.airbnb.mvrx.*
+import com.airbnb.mvrx.BaseMvRxFragment
+import com.airbnb.mvrx.activityViewModel
+import com.airbnb.mvrx.fragmentViewModel
+import com.airbnb.mvrx.withState
 import com.app.ykc.zigzag_challenge.R
-import com.app.ykc.zigzag_challenge.app.withModels
 import com.app.ykc.zigzag_challenge.data.Ages
-import com.app.ykc.zigzag_challenge.data.getString
 import com.app.ykc.zigzag_challenge.main.MainViewModel
-import com.app.ykc.zigzag_challenge.views.*
 import kotlinx.android.synthetic.main.fragment_filter.*
-import kotlinx.android.synthetic.main.shoppingmall.*
 import timber.log.Timber
 
 

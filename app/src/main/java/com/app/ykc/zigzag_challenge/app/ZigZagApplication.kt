@@ -8,7 +8,6 @@ import com.facebook.stetho.Stetho
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import timber.log.Timber
-import java.io.File
 
 /**
  * Launcher icon made by Freepik at flaticon.com

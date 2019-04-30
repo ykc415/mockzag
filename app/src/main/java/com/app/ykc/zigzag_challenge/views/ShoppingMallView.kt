@@ -1,13 +1,10 @@
 package com.app.ykc.zigzag_challenge.views
 
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.FrameLayout
-import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import com.airbnb.epoxy.CallbackProp
 import com.airbnb.epoxy.ModelProp
 import com.airbnb.epoxy.ModelView
@@ -18,7 +15,6 @@ import com.app.ykc.zigzag_challenge.data.ShoppingMall
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import kotlinx.android.synthetic.main.shoppingmall.view.*
-import java.lang.IllegalStateException
 
 @ModelView(autoLayout = ModelView.Size.MATCH_WIDTH_WRAP_HEIGHT)
 class ShoppingMallView @JvmOverloads constructor(

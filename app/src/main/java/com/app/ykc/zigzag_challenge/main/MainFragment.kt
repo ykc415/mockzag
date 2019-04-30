@@ -7,9 +7,10 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView.VERTICAL
-import com.airbnb.epoxy.AsyncEpoxyController
-import com.airbnb.epoxy.EpoxyController
-import com.airbnb.mvrx.*
+import com.airbnb.mvrx.BaseMvRxFragment
+import com.airbnb.mvrx.Success
+import com.airbnb.mvrx.activityViewModel
+import com.airbnb.mvrx.withState
 import com.app.ykc.zigzag_challenge.R
 import com.app.ykc.zigzag_challenge.app.withModels
 import com.app.ykc.zigzag_challenge.views.emptyView

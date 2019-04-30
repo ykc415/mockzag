@@ -7,8 +7,6 @@ import com.app.ykc.zigzag_challenge.app.MvRxViewModel
 import com.app.ykc.zigzag_challenge.data.Ages
 import com.app.ykc.zigzag_challenge.utils.replace
 
-import timber.log.Timber
-
 class FilterViewModel(
     state: FilterState
 

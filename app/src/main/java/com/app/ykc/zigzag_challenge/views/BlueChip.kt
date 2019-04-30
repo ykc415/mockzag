@@ -3,7 +3,6 @@ package com.app.ykc.zigzag_challenge.views
 import android.util.TypedValue
 import android.view.View
 import com.airbnb.epoxy.EpoxyModel
-import com.airbnb.epoxy.OnModelClickListener
 import com.app.ykc.zigzag_challenge.R
 import com.app.ykc.zigzag_challenge.app.KotlinModel
 import com.app.ykc.zigzag_challenge.data.Ages
